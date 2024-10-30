@@ -69,6 +69,11 @@ function App() {
   }
 
   const handleDeleteActivity = (id: string) => {
+    setSubmitting(true);
+    agent.activities.delete(id).then(() => {
+      setActivities([...activities.filter(x => x.id !== id)]);
+      setSubmitting(false);
+    })
     setActivities([...activities.filter(x => x.id !== id)])
   }
 
