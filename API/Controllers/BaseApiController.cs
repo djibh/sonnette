@@ -14,6 +14,8 @@ public class BaseApiController : ControllerBase
 
     protected ActionResult HandleResult<T>(Result<T> result) 
     {
+        if (result == null)
+            NotFound();
         if (result.IsSuccess && result.Value != null) 
             Ok(result.Value);
         if (result.IsSuccess && result.Value != null) 
