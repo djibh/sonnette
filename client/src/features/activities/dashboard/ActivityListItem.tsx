@@ -35,7 +35,7 @@ export default function ActivityListItem({ activity }: props) {
                 <span>{activity.description}</span>
                 <Button
                     as={Link}
-                    to={`activities/${activity.id}`}
+                    to={`${activity.id}`}
                     color="teal"
                     floated="right"
                     content="View"
