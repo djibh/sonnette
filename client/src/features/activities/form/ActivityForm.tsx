@@ -1,4 +1,4 @@
-import { Button, FormField, Label, Segment } from "semantic-ui-react";
+import { Button, Label, Segment } from "semantic-ui-react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
@@ -6,8 +6,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Activity } from "../../../app/models/activity";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { v4 as uuid } from "uuid";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import CustomTextInput from "../../../app/common/form/CustomTextInput";
 
 export default observer(function ActivityForm() {
     const { activityStore } = useStore();
@@ -33,6 +34,13 @@ export default observer(function ActivityForm() {
 
     const validationSchema = Yup.object({
         title: Yup.string().required("The activity title is required"),
+        description: Yup.string().required(
+            "The activity description is required"
+        ),
+        category: Yup.string().required(),
+        date: Yup.string().required(),
+        venue: Yup.string().required(),
+        city: Yup.string().required(),
     });
 
     useEffect(() => {
@@ -76,20 +84,18 @@ export default observer(function ActivityForm() {
                         onSubmit={handleSubmit}
                         autoComplete="off"
                     >
-                        <FormField>
-                            <Field placeholder="Title" name="title" />
-                            <ErrorMessage
-                                name="title"
-                                render={(error) => (
-                                    <Label basic color="red" content={error} />
-                                )}
-                            />
-                        </FormField>
-                        <Field placeholder="Description" name="description" />
-                        <Field placeholder="Category" name="category" />
-                        <Field placeholder="Date" name="date" />
-                        <Field placeholder="City" name="city" />
-                        <Field placeholder="Venue" name="venue" />
+                        <CustomTextInput name="title" placeholder="Title" />
+                        <CustomTextInput
+                            placeholder="Description"
+                            name="description"
+                        />
+                        <CustomTextInput
+                            placeholder="Category"
+                            name="category"
+                        />
+                        <CustomTextInput placeholder="Date" name="date" />
+                        <CustomTextInput placeholder="City" name="city" />
+                        <CustomTextInput placeholder="Venue" name="venue" />
                         <Button
                             loading={loading}
                             floated="right"
