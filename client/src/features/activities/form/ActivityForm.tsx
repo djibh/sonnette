@@ -12,6 +12,7 @@ import CustomTextInput from "../../../app/common/form/CustomTextInput";
 import CustomTextArea from "../../../app/common/form/CustomTextArea";
 import CustomSelectInput from "../../../app/common/form/CustomSelectInput";
 import { categoryOptions } from "../../../app/common/options/categoryOptions";
+import CustomDateInput from "../../../app/common/form/CustomDateInput";
 
 export default observer(function ActivityForm() {
     const { activityStore } = useStore();
@@ -30,7 +31,7 @@ export default observer(function ActivityForm() {
         title: "",
         category: "",
         description: "",
-        date: "",
+        date: null,
         city: "",
         venue: "",
     });
@@ -98,7 +99,13 @@ export default observer(function ActivityForm() {
                             placeholder="Category"
                             name="category"
                         />
-                        <CustomTextInput placeholder="Date" name="date" />
+                        <CustomDateInput
+                            placeholderText="Date"
+                            name="date"
+                            showTimeSelect
+                            timeCaption="time"
+                            dateFormat="MMM d, yyy h:mm aa"
+                        />
                         <CustomTextInput placeholder="City" name="city" />
                         <CustomTextInput placeholder="Venue" name="venue" />
                         <Button
