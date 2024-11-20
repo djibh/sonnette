@@ -3,6 +3,7 @@ import { Activity } from "../models/activity";
 import agent from "../api/agent";
 import { v4 as uuid } from "uuid";
 import { format } from "date-fns";
+import fr from "date-fns/locale/fr";
 
 export default class ActivityStore {
     activityRegistry = new Map<string, Activity>();
@@ -24,7 +25,9 @@ export default class ActivityStore {
     get groupedActivities() {
         return Object.entries(
             this.activitiesByDate.reduce((activities, activity) => {
-                const date = format(activity.date!, "dd MMM yyyy");
+                const date = format(activity.date!, "dd MMM yyyy", {
+                    locale: fr,
+                });
                 activities[date] = activities[date]
                     ? [...activities[date], activity]
                     : [activity];

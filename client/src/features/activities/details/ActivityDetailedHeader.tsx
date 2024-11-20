@@ -3,6 +3,7 @@ import { Button, Header, Item, Segment, Image } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
+import fr from "date-fns/locale/fr";
 
 const activityImageStyle = {
     filter: "brightness(30%)",
@@ -39,7 +40,11 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
                                     content={activity.title}
                                     style={{ color: "white" }}
                                 />
-                                <p>{format(activity.date!, "dd MMM yyyy")}</p>
+                                <p>
+                                    {format(activity.date!, "dd MMM yyyy", {
+                                        locale: fr,
+                                    })}
+                                </p>
                                 <p>
                                     Hosted by <strong>Bob</strong>
                                 </p>
