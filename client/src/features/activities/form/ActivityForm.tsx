@@ -9,6 +9,7 @@ import { v4 as uuid } from "uuid";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import CustomTextInput from "../../../app/common/form/CustomTextInput";
+import CustomTextArea from "../../../app/common/form/CustomTextArea";
 
 export default observer(function ActivityForm() {
     const { activityStore } = useStore();
@@ -85,7 +86,8 @@ export default observer(function ActivityForm() {
                         autoComplete="off"
                     >
                         <CustomTextInput name="title" placeholder="Title" />
-                        <CustomTextInput
+                        <CustomTextArea
+                            rows={3}
                             placeholder="Description"
                             name="description"
                         />
