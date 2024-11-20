@@ -10,6 +10,8 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import CustomTextInput from "../../../app/common/form/CustomTextInput";
 import CustomTextArea from "../../../app/common/form/CustomTextArea";
+import CustomSelectInput from "../../../app/common/form/CustomSelectInput";
+import { categoryOptions } from "../../../app/common/options/categoryOptions";
 
 export default observer(function ActivityForm() {
     const { activityStore } = useStore();
@@ -91,7 +93,8 @@ export default observer(function ActivityForm() {
                             placeholder="Description"
                             name="description"
                         />
-                        <CustomTextInput
+                        <CustomSelectInput
+                            options={categoryOptions}
                             placeholder="Category"
                             name="category"
                         />
