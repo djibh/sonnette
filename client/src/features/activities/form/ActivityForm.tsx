@@ -1,12 +1,18 @@
-import { Button, Form, Segment } from "semantic-ui-react";
-import { ChangeEvent, useEffect, useState } from "react";
+import { Button, Header, Segment } from "semantic-ui-react";
+import { useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Activity } from "../../../app/models/activity";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { v4 as uuid } from "uuid";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import CustomTextInput from "../../../app/common/form/CustomTextInput";
+import CustomTextArea from "../../../app/common/form/CustomTextArea";
+import CustomSelectInput from "../../../app/common/form/CustomSelectInput";
+import { categoryOptions } from "../../../app/common/options/categoryOptions";
+import CustomDateInput from "../../../app/common/form/CustomDateInput";
 
 export default observer(function ActivityForm() {
     const { activityStore } = useStore();
@@ -25,84 +31,80 @@ export default observer(function ActivityForm() {
         title: "",
         category: "",
         description: "",
-        date: "",
+        date: null,
         city: "",
         venue: "",
+    });
+
+    const validationSchema = Yup.object({
+        title: Yup.string().required("The activity title is required"),
+        description: Yup.string().required(
+            "The activity description is required"
+        ),
+        category: Yup.string().required(),
+        date: Yup.string().required("Date is required").nullable(),
+        venue: Yup.string().required(),
+        city: Yup.string().required(),
     });
 
     useEffect(() => {
         if (id) loadActivity(id).then((activity) => setActivity(activity!));
     }, [id, loadActivity]);
 
-    // const handleSubmit = () => {
-    //     if (!activity.id) {
-    //         activity.id = uuid();
-    //         createActivity(activity).then(() =>
-    //             navigate(`/activities/${activity.id}`)
-    //         );
-    //     } else {
-    //         updateActivity(activity).then(() =>
-    //             navigate(`/activities/${activity.id}`)
-    //         );
-    //     }
-    // };
-
-    // const handleInputChange = (
-    //     evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    // ) => {
-    //     const { name, value } = evt.target;
-    //     setActivity({ ...activity, [name]: value });
-    // };
+    const handleFormSubmit = (activity: Activity) => {
+        if (!activity.id) {
+            activity.id = uuid();
+            createActivity(activity).then(() =>
+                navigate(`/activities/${activity.id}`)
+            );
+        } else {
+            updateActivity(activity).then(() =>
+                navigate(`/activities/${activity.id}`)
+            );
+        }
+    };
 
     if (loadingInitial)
         return <LoadingComponent content="Loading activity..." />;
 
     return (
         <Segment clearing>
+            <Header content="Activity details" sub color="teal" />
             <Formik
+                validationSchema={validationSchema}
                 enableReinitialize
                 initialValues={activity}
-                onSubmit={(values) => console.log(values)}
+                onSubmit={(values) => handleFormSubmit(values)}
             >
-                {({ values: activity, handleChange, handleSubmit }) => (
-                    <Form onSubmit={handleSubmit} autoComplete="off">
-                        <Form.Input
-                            placeholder="Title"
-                            value={activity.title}
-                            name="title"
-                            onChange={handleChange}
-                        />
-                        <Form.TextArea
+                {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+                    <Form
+                        className="ui form"
+                        onSubmit={handleSubmit}
+                        autoComplete="off"
+                    >
+                        <CustomTextInput name="title" placeholder="Title" />
+                        <CustomTextArea
+                            rows={3}
                             placeholder="Description"
-                            value={activity.description}
                             name="description"
-                            onChange={handleChange}
                         />
-                        <Form.Input
+                        <CustomSelectInput
+                            options={categoryOptions}
                             placeholder="Category"
-                            value={activity.category}
                             name="category"
-                            onChange={handleChange}
                         />
-                        <Form.Input
-                            placeholder="Date"
-                            value={activity.date}
+                        <CustomDateInput
+                            placeholderText="Date"
                             name="date"
-                            onChange={handleChange}
+                            showTimeSelect
+                            timeCaption="time"
+                            dateFormat="MMM d, yyy h:mm aa"
                         />
-                        <Form.Input
-                            placeholder="City"
-                            value={activity.city}
-                            name="city"
-                            onChange={handleChange}
-                        />
-                        <Form.Input
-                            placeholder="Venue"
-                            value={activity.venue}
-                            name="venue"
-                            onChange={handleChange}
-                        />
+                        <Header content="Location details" sub color="teal" />
+                        <CustomTextInput placeholder="City" name="city" />
+                        <CustomTextInput placeholder="Venue" name="venue" />
                         <Button
+                            disabled={!isValid || isSubmitting || dirty}
                             loading={loading}
                             floated="right"
                             positive
