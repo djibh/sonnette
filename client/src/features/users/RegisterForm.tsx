@@ -1,9 +1,10 @@
 import { ErrorMessage, Form, Formik } from "formik";
 import CustomTextInput from "../../app/common/form/CustomTextInput";
-import { Button, Header, Label } from "semantic-ui-react";
+import { Button, Header } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import * as Yup from "yup";
+import ValidationError from "../errors/ValidationError";
 
 function RegisterForm() {
     const { userStore } = useStore();
@@ -19,7 +20,7 @@ function RegisterForm() {
             onSubmit={(values, { setErrors }) =>
                 userStore
                     .register(values)
-                    .catch(() => setErrors({ error: "Invalid email/password" }))
+                    .catch((error) => setErrors({ error }))
             }
             validationSchema={Yup.object({
                 displayName: Yup.string().required(),
@@ -30,7 +31,7 @@ function RegisterForm() {
         >
             {({ handleSubmit, isSubmitting, errors, isValid, dirty }) => (
                 <Form
-                    className="ui form"
+                    className="ui form error"
                     onSubmit={handleSubmit}
                     autoComplete="off"
                 >
@@ -54,11 +55,8 @@ function RegisterForm() {
                     <ErrorMessage
                         name="error"
                         render={() => (
-                            <Label
-                                style={{ marginBottom: 10 }}
-                                basic
-                                color="red"
-                                content={errors.error}
+                            <ValidationError
+                                errors={errors.error as unknown as string[]}
                             />
                         )}
                     />
