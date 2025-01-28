@@ -45,13 +45,15 @@ namespace API.Controllers
         {
             if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.UserName))
             {
-                return BadRequest("Username already taken");
+                ModelState.AddModelError("username", "Username already taken");
+                return ValidationProblem();
             }
             
             // Check dans IdentityServiceExtensions mais pour avoir un custom message on ajoute cette verif pour le moment
             if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
             {
-                return BadRequest("Email already taken");
+                ModelState.AddModelError("email", "Email already taken");
+                return ValidationProblem();
             }
 
             var user = new AppUser
