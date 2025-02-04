@@ -24,6 +24,7 @@ export default function ActivityListItem({ activity }: props) {
                 <Item.Group>
                     <Item>
                         <Item.Image
+                            style={{ height: "100%" }}
                             size="tiny"
                             circular
                             src="/assets/user.png"
