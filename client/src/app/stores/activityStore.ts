@@ -176,4 +176,23 @@ export default class ActivityStore {
             runInAction(() => (this.loading = false));
         }
     };
+
+    cancelActivityToggle = async () => {
+        this.loading = true;
+        try {
+            await agent.activities.attend(this.selectedActivity!.id);
+            runInAction(() => {
+                this.selectedActivity!.isCancelled =
+                    !this.selectedActivity?.isCancelled;
+                this.activityRegistry.set(
+                    this.selectedActivity!.id,
+                    this.selectedActivity!
+                );
+            });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            runInAction(() => (this.loading = false));
+        }
+    };
 }
