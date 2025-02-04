@@ -14,8 +14,13 @@ import {
     Statistic,
     StatisticGroup,
 } from "semantic-ui-react";
+import { Profile } from "../../app/models/Profile";
+import { observer } from "mobx-react-lite";
 
-function ProfileHeader() {
+interface Props {
+    profile: Profile;
+}
+function ProfileHeader({ profile }: Props) {
     return (
         <Segment>
             <Grid>
@@ -25,10 +30,13 @@ function ProfileHeader() {
                             <ItemImage
                                 avatar
                                 size="small"
-                                src={"/assets/user.png"}
+                                src={profile.image || "/assets/user.png"}
                             />
                             <ItemContent verticalAlign="middle">
-                                <Header as={"h1"} content="DisplayName" />
+                                <Header
+                                    as={"h1"}
+                                    content={profile.displayName}
+                                />
                             </ItemContent>
                         </Item>
                     </ItemGroup>
@@ -58,4 +66,4 @@ function ProfileHeader() {
     );
 }
 
-export default ProfileHeader;
+export default observer(ProfileHeader);
