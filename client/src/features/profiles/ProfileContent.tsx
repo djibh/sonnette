@@ -2,15 +2,15 @@ import { Tab, TabPane } from "semantic-ui-react";
 
 function ProfileContent() {
     const panes = [
-        { MenuItem: "About", render: () => <TabPane>About Content</TabPane> },
-        { MenuItem: "Photos", render: () => <TabPane>Photos Content</TabPane> },
-        { MenuItem: "Events", render: () => <TabPane>Events Content</TabPane> },
+        { menuItem: "About", render: () => <TabPane>About Content</TabPane> },
+        { menuItem: "Photos", render: () => <TabPane>Photos Content</TabPane> },
+        { menuItem: "Events", render: () => <TabPane>Events Content</TabPane> },
         {
-            MenuItem: "Followers",
+            menuItem: "Followers",
             render: () => <TabPane>Followers Content</TabPane>,
         },
         {
-            MenuItem: "Following",
+            menuItem: "Following",
             render: () => <TabPane>Following Content</TabPane>,
         },
     ];
