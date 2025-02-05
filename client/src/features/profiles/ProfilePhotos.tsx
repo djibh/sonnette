@@ -12,6 +12,7 @@ import {
 import { Profile } from "../../app/models/Profile";
 import { useStore } from "../../app/stores/store";
 import { useState } from "react";
+import PhotoUploadWidget from "../../app/common/imageUpload/PhotoUploadWidget";
 
 interface Props {
     profile: Profile;
@@ -38,7 +39,7 @@ function ProfilePhotos({ profile }: Props) {
                 </GridColumn>
                 <GridColumn width={16}>
                     {addPhotoMode ? (
-                        <p>Photo widget goes here</p>
+                        <PhotoUploadWidget />
                     ) : (
                         <CardGroup itemsPerRow={5}>
                             {profile.photos?.map((photo) => (
