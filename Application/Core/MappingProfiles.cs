@@ -1,5 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 using Application.Activities;
+using Application.Comments;
 using AutoMapper;
 using Domain;
 
@@ -20,6 +21,10 @@ namespace Application.Core
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.AppUser.Photos.FirstOrDefault(X500DistinguishedName => X500DistinguishedName.IsMain).Url));
             CreateMap<AppUser, Profiles.Profile>()
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsMain).Url));
+            CreateMap<Comment, CommentDto>()
+                .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Author.DisplayName))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Author.UserName))
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Author.Photos.FirstOrDefault(X500DistinguishedName => X500DistinguishedName.IsMain).Url));
         }
     }
 }
